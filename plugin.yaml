@@ -1,31 +1,31 @@
 name: "khulnasoft"
 repository: github.com/khulnasoft/tunnel-plugin-khulnasoft
-version: "master"
+version: "v0.83.6"
 usage: tunnel khulnasoft <srcPath>
 description: A Tunnel plugin that sends results to Khulnasoft.
 platforms:
   - selector: # optional
       os: linux
       arch: amd64
-    uri: https://github.com/khulnasoft/tunnel-plugin-khulnasoft/releases/download/master/linux_amd64_master.tar.gz
+    uri: https://github.com/khulnasoft/tunnel-plugin-khulnasoft/releases/download/v0.83.6/linux_amd64_v0.83.6.tar.gz
     bin: ./khulnasoft
   - selector:
       os: linux
       arch: arm64
-    uri: https://github.com/khulnasoft/tunnel-plugin-khulnasoft/releases/download/master/linux_arm64_master.tar.gz
+    uri: https://github.com/khulnasoft/tunnel-plugin-khulnasoft/releases/download/v0.83.6/linux_arm64_v0.83.6.tar.gz
     bin: ./khulnasoft
   - selector:
       os: darwin
       arch: amd64
-    uri: https://github.com/khulnasoft/tunnel-plugin-khulnasoft/releases/download/master/darwin_amd64_master.tar.gz
+    uri: https://github.com/khulnasoft/tunnel-plugin-khulnasoft/releases/download/v0.83.6/darwin_amd64_v0.83.6.tar.gz
     bin: ./khulnasoft
   - selector:
       os: darwin
       arch: arm64
-    uri: https://github.com/khulnasoft/tunnel-plugin-khulnasoft/releases/download/master/darwin_arm64_master.tar.gz
+    uri: https://github.com/khulnasoft/tunnel-plugin-khulnasoft/releases/download/v0.83.6/darwin_arm64_v0.83.6.tar.gz
     bin: ./khulnasoft
   - selector:
       os: windows
       arch: amd64
-    uri: https://github.com/khulnasoft/tunnel-plugin-khulnasoft/releases/download/master/windows_amd64_master.tar.gz
+    uri: https://github.com/khulnasoft/tunnel-plugin-khulnasoft/releases/download/v0.83.6/windows_amd64_v0.83.6.tar.gz
     bin: ./khulnasoft
