@@ -1,0 +1,56 @@
+name: update docker images
+on:
+  pull_request:
+    branches: 
+      - master
+    types:
+      - closed
+    paths:
+      - plugin.yaml
+      - README-dockerhub.md
+
+jobs:
+  Update-images:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout target branch
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.base.ref }}
+    - name: Login to docker.io registry
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USER }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Extract version
+      run: "echo \"new_version=$(grep 'version: ' plugin.yaml | cut -d '\"' -f2)\" >> $GITHUB_ENV"
+    - name: Change image versions to latest
+      run: |
+        docker pull khulnasoft/khulnasoft-scanner:${{ env.new_version }}-amd64
+        docker tag khulnasoft/khulnasoft-scanner:${{ env.new_version }}-amd64 khulnasoft/khulnasoft-scanner:latest-amd64
+        docker push khulnasoft/khulnasoft-scanner:latest-amd64
+        
+        docker pull khulnasoft/khulnasoft-scanner:${{ env.new_version }}-arm64
+        docker tag khulnasoft/khulnasoft-scanner:${{ env.new_version }}-arm64 khulnasoft/khulnasoft-scanner:latest-arm64
+        docker push khulnasoft/khulnasoft-scanner:latest-arm64
+        
+        docker pull khulnasoft/khulnasoft-scanner:${{ env.new_version }}-amd64-limited
+        docker tag khulnasoft/khulnasoft-scanner:${{ env.new_version }}-amd64-limited khulnasoft/khulnasoft-scanner:latest-amd64-limited
+        docker push khulnasoft/khulnasoft-scanner:latest-amd64-limited
+        
+        docker pull khulnasoft/khulnasoft-scanner:${{ env.new_version }}-arm64-limited
+        docker tag khulnasoft/khulnasoft-scanner:${{ env.new_version }}-arm64-limited khulnasoft/khulnasoft-scanner:latest-arm64-limited
+        docker push khulnasoft/khulnasoft-scanner:latest-arm64-limited
+        docker manifest create khulnasoft/khulnasoft-scanner:latest khulnasoft/khulnasoft-scanner:latest-amd64 khulnasoft/khulnasoft-scanner:latest-arm64
+        docker manifest push khulnasoft/khulnasoft-scanner:latest
+        
+        docker manifest create khulnasoft/khulnasoft-scanner:latest-limited khulnasoft/khulnasoft-scanner:latest-amd64-limited khulnasoft/khulnasoft-scanner:latest-arm64-limited
+        docker manifest push khulnasoft/khulnasoft-scanner:latest-limited
+    - name: DockerHub description update
+      uses: peter-evans/dockerhub-description@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USER }}
+        password: ${{ secrets.OCKERHUB_TOKEN }}
+        repository: khulnasoft/khulnasoft-scanner
+        readme-filepath: ./README-dockerhub.md
